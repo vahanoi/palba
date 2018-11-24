@@ -7,8 +7,10 @@ Python 3
 @author: vahanoi
 '''
 import sys
-from _ast import If
 
+def loadl():
+    #TODO: check if file exist and open in read only mode
+    None
 
 def palba():
     None
@@ -19,6 +21,7 @@ def main ():
         why to rewrite it?? Just use existing Just find out how to use
         Options:
             -o then c for csv (-oc), h for html (-oh)
+            -y auto answer yes
             ...
     
     '''
@@ -31,7 +34,7 @@ def main ():
             print('Entering command line mode - Check command line options')
             print (len(sys.argv))
             for option in sys.argv:
-                #TODO: Check options provided or create table with them
+                #TODO: Check options provided and create table with them
                 if str(option)=='-oh':
                     None
                 elif str(option)=='-oc':
