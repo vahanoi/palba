@@ -1,66 +1,66 @@
-'''
-Created on 18 Nov 2018
+#!/usr/bin/env python3
+"""Created on 18 Nov 2018
+
 Updete on 15 Sep 2020
 
 Palba startup file
 Python 3
 
 @author: vahanoi
-'''
+"""
+
 import sys
 import os
 import gzip
-import log
 import getopt
-import datetime
-import re
-import pdb; 
+# import log.py
+# import datetime
+# import re
+# import pdb
 
 
-DefFolder='/var/log/nginx'
-DefOutputFile='of.txt'
+DEF_FOLDER = '/var/log/nginx'
+DEF_OUTPUT_FILE = 'of.txt'
 
-def loadl():
-    # TODO: check if file exist and open in read only mode
-    None
 
 '''Read directory, build list of files and execute file listing
 '''
 
-def dread(Folder):
-    line='x'
+
+def dread(folder):
+    """Directory read
+
+    """
+    line = 'x'
 #   breakpoint()
-    for fname in os.listdir(Folder):
-        print (Folder+'/'+fname)
+    for fname in os.listdir(folder):
+        print(folder+'/'+fname)
         if fname.endswith('.gz'):
             try:
-               with gzip.open(Folder+"/"+fname, 'r') as fo:
-                   while line != '':
-                       line = fo.readline()
-                       print (line)
-                       breakpoint()
+                with gzip.open(folder+"/"+fname, 'r') as fopen:
+                    while line != '':
+                        line = fopen.readline()
+                        print(line)
+                        breakpoint()
             except IOError:
-               print(os.path.dirname(os.path.abspath(__file__)))
-               print ("Could not read file: ")
-            fo.close()
+                print(os.path.dirname(os.path.abspath(__file__)))
+                print("Could not read file: ")
+            fopen.close()
 
         elif fname.endswith('.log') or fname.endswith('.log.1'):
             try:
-               with open(Folder+"/"+fname, 'r') as fo:
-                  while line != '':
-                      line = fo.readline() 
-                      print ()
-                      breakpoint() 
+                with open(folder+"/"+fname, 'r') as fopen:
+                    while line != '':
+                        line = fopen.readline()
+                        print()
+                        breakpoint()
             except IOError:
-               print(os.path.dirname(os.path.abspath(__file__)))
-               print ("Could not read file: ")
-            fo.close()
+                print(os.path.dirname(os.path.abspath(__file__)))
+                print("Could not read file: ")
+            fopen.close()
 
-def palba():
-    None
-    
-'''Main'''    
-def main (argv):
+
+def main(argv):
     ''' Start a parser and run a main program loop
         pylogsparser - parsing library with XML normalizers -  by Wallix
         why to rewrite it?? Just use existing Just find out how to use
@@ -68,39 +68,40 @@ def main (argv):
             -o then c for csv (-oc), h for html (-oh)
             -y auto answer yes
             ...
-    
+
     '''
-        # Get startup options using getopt
+# Get startup options using getopt
     try:
-        opts, args = getopt.getopt(argv,"hi:o:d:D:",["ifile=","ofile=","date=","dir="])
-    except getopt.GetoptError as err: # FIXME: not throwing error correctly - 
+        opts, args = getopt.getopt(argv, "hi:o:d:D:", ["ifile=", "ofile=",
+                                                       "date=", "dir="])
+    except getopt.GetoptError as err:
         print(err)
-        print('Error use format palba.py -i <inputfile>|<ipnutfolder> -o <outputfile> -d YYYY/MM/dd')
+        print('Error use format palba.py -i <inputfile>|<ipnutfolder> \
+              -o <outputfile> -d YYYY/MM/dd')
         sys.exit(2)
 
-# TODO: check input options from command line sys.argv[]
-     
-    for o,a in opts:
-        if o == '-D' or o == '--dir':
-             dread(a) # TODO read directory - dread()
-        elif o == '-i' or o == '--ofile' :
+    for startup_opt, startup_arg in opts:
+        if '-D' or '--dir' in startup_opt:
+            dread(startup_arg)  # read given directory and read log files
+        elif '-i' or '--ofile' in startup_opt:
             None
 
-    while True:      
-        if len(sys.argv)==1:
-            print ('Entering default mode - analyse %s folder' % DefFolder)
+    while True:
+        if len(sys.argv) == 1:
+            print('Entering default mode - analyse %s folder' % DEF_FOLDER)
             break
         else:
             print('Entering command line mode - Check command line options')
-            print (len(sys.argv))
+            print(len(sys.argv))
             for option in sys.argv:
-                # TODO: Check options provided and create table with them
-                if str(option)=='-oh':
+            # TODO: Check options provided and create table with them
+                if str(option) == '-oh':
                     None
-                elif str(option)=='-oc':
+                elif str(option) == '-oc':
                     None    
-                print (str(option))
+                print(str(option))
             break
+
+
 if __name__ == '__main__':
     main(sys.argv[1:])
-
