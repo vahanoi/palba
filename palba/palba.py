@@ -68,13 +68,22 @@ def main(argv):
         -o or --ofile for output file name
         ... add some more
     """
-parser = OptionParser ()
-parser.add_option("-d", "--dir", dest="folder",
-                  help="Log folder to analyse default /var/log",)
+
+
+parser = OptionParser()
+
+
+parser.add_option("-d", "--dir", dest="folder", type="string", action="store",
+                  help="Log folder to analyse - default /var/log",
+                  default="/var/log")
+parser.add_option("-i", "--ifile", dest="ifile", type="string", action="store",
+                  help="input file for single file analysis")
 
 (options, args) = parser.parse_args()
-
-dread(options.folder)
-
+if options.folder in ("-d", "--dir"):
+    dread(options.folder)
+elif options.ofile in ("-o", "--ofile"):
+    print("do something %s" % args.ofile)
+                                             
 if __name__ == '__main__':
     main(sys.argv[1:])

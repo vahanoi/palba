@@ -1,9 +1,8 @@
-'''
-Created on 22 Nov 2018
+'''Created on 22 Nov 2018
 
 @author: vahanoi
 '''
-
+        # test
 class logfile(object):
     '''
     operations on logfile - open, close, analyse, check type, convert? 
