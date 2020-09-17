@@ -12,7 +12,7 @@ Python 3
 import sys
 import os
 import gzip
-import getopt
+from optparse import OptionParser
 # import log.py
 # import datetime
 # import re
@@ -61,30 +61,20 @@ def dread(folder):
 
 
 def main(argv):
-   """ Start a parser and run a main program loop
-       pylogsparser - parsing library with XML normalizers -  by Wallix
-       why to rewrite it?? Just use existing Just find out how to use
-       Options:
-           -o then c for csv (-oc), h for html (-oh)
-           -y auto answer yes
-           ...
-"""
-# Get startup options using getopt
-    try:
-        opts, args = getopt.getopt(argv, "hi:o:d:D:", ["ifile=", "ofile=",
-                                                       "date=", "dir="])
-    except getopt.GetoptError as err:
-        print(err)
-        print('Error use format palba.py -i <inputfile>|<ipnutfolder> \
-              -o <outputfile> -d YYYY/MM/dd')
-        sys.exit(2)
+    """ Start a parser and run a main program loop
+    Options:
+        -d OR --dir for directory
+        -i or --ifile for input file
+        -o or --ofile for output file name
+        ... add some more
+    """
+parser = OptionParser ()
+parser.add_option("-d", "--dir", dest="folder",
+                  help="Log folder to analyse default /var/log",)
 
-    for startup_opt, startup_arg in opts:
-        if '-D' or '--dir' in startup_opt:
-            dread(startup_arg)  # read given directory and read log files
-        elif '-i' or '--ofile' in startup_opt:
-            None
+(options, args) = parser.parse_args()
 
+dread(options.folder)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
