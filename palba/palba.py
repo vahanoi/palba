@@ -61,15 +61,14 @@ def dread(folder):
 
 
 def main(argv):
-    ''' Start a parser and run a main program loop
-        pylogsparser - parsing library with XML normalizers -  by Wallix
-        why to rewrite it?? Just use existing Just find out how to use
-        Options:
-            -o then c for csv (-oc), h for html (-oh)
-            -y auto answer yes
-            ...
-
-    '''
+   """ Start a parser and run a main program loop
+       pylogsparser - parsing library with XML normalizers -  by Wallix
+       why to rewrite it?? Just use existing Just find out how to use
+       Options:
+           -o then c for csv (-oc), h for html (-oh)
+           -y auto answer yes
+           ...
+"""
 # Get startup options using getopt
     try:
         opts, args = getopt.getopt(argv, "hi:o:d:D:", ["ifile=", "ofile=",
@@ -85,22 +84,6 @@ def main(argv):
             dread(startup_arg)  # read given directory and read log files
         elif '-i' or '--ofile' in startup_opt:
             None
-
-    while True:
-        if len(sys.argv) == 1:
-            print('Entering default mode - analyse %s folder' % DEF_FOLDER)
-            break
-        else:
-            print('Entering command line mode - Check command line options')
-            print(len(sys.argv))
-            for option in sys.argv:
-            # TODO: Check options provided and create table with them
-                if str(option) == '-oh':
-                    None
-                elif str(option) == '-oc':
-                    None    
-                print(str(option))
-            break
 
 
 if __name__ == '__main__':
