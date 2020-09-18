@@ -13,7 +13,8 @@ import sys
 import os
 import gzip
 from optparse import OptionParser
-# import log.py
+import string
+import re
 # import datetime
 # import re
 # import pdb
@@ -29,22 +30,28 @@ DEF_OUTPUT_FILE = 'of.txt'
 
 def dread(folder):
     """Directory read
+    LogFormats:
+        host logname user date/time request status
 
     """
     line = 'x'
+    # RegEx strimg tp matcj log line in http access log
+    log_regex = r"^(\d{1,3}\.\d+\.\d+\.\d+)\s+([\w-]+)\s+([\w-]+)\s+\[(\d{1,2} \
+                    \/\w{3}\/\d{4})\:(\d{2}\:\d{2}\:\d{2})\s*([\+\-]*\d{0,4}) \
+                    \]\s(\"\"|\".*\")\s(\d{3})\s(\d*)\s(\".*\")\s(\".*\")$"
 #   breakpoint()
     for fname in os.listdir(folder):
         print(folder+'/'+fname)
         if fname.endswith('.gz'):
             try:
                 with gzip.open(folder+"/"+fname, 'r') as fopen:
-                    while line != '':
-                        line = fopen.readline()
-                        print(line)
-                        breakpoint()
+                    for line in fopen:
+                        split_line = line
+                        # breakpoint()
             except IOError:
                 print(os.path.dirname(os.path.abspath(__file__)))
                 print("Could not read file: ")
+            line = ''
             fopen.close()
 
         elif fname.endswith('.log') or fname.endswith('.log.1'):
@@ -58,6 +65,7 @@ def dread(folder):
                 print(os.path.dirname(os.path.abspath(__file__)))
                 print("Could not read file: ")
             fopen.close()
+            line = ''
 
 
 def main(argv):
@@ -67,6 +75,7 @@ def main(argv):
         -i or --ifile for input file
         -o or --ofile for output file name
         ... add some more
+        optparse - parsing library
     """
 
 
@@ -78,12 +87,22 @@ parser.add_option("-d", "--dir", dest="folder", type="string", action="store",
                   default="/var/log")
 parser.add_option("-i", "--ifile", dest="ifile", type="string", action="store",
                   help="input file for single file analysis")
+parser.add_option("-o", "--ofile", dest="ofile", type="string", action="store",
+                  help="output file to save results")
+
+# breakpoint()
 
 (options, args) = parser.parse_args()
+
+
 if options.folder in ("-d", "--dir"):
     dread(options.folder)
 elif options.ofile in ("-o", "--ofile"):
     print("do something %s" % args.ofile)
-                                             
+elif options.ifile is not None:
+    print(options.ifile)
+else:
+    dread(options.folder)
+
 if __name__ == '__main__':
     main(sys.argv[1:])
