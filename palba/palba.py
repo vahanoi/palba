@@ -36,17 +36,18 @@ def dread(folder):
     """
     line = 'x'
     # RegEx string to match log line in http access log
-    acces_log_regex =re.compile(rb"^(\d{1,3}\.\d+\.\d+\.\d+)\s+([\w-]+)\s+([\w-]+)\s+\[(\d{1,2} \
-                    \/\w{3}\/\d{4})\:(\d{2}\:\d{2}\:\d{2})\s*([\+\-]*\d{0,4}) \
-                    \]\s(\"\"|\".*\")\s(\d{3})\s(\d*)\s(\".*\")\s(\".*\")$")
+    acces_log_regex =re.compile(r"^(\d{1,3}\.\d+\.\d+\.\d+)\s+([\w-]+)\s+([\w-]+)\s+\[(\d{1,2} \
+                                    \/\w{3}\/\d{4})\:(\d{2}\:\d{2}\:\d{2})\s*([\+\-]*\d{0,4}) \
+                                    \]\s(\"\"|\".*\")\s(\d{3})\s(\d*)\s(\".*\")\s(\".*\")$")
 #   breakpoint()
+# should build separate method to read file
     for fname in os.listdir(folder):
         print(folder+'/'+fname)
         if fname.endswith('.gz'):
             try:
                 with gzip.open(folder+"/"+fname, 'r') as fopen:
                     for line in fopen:
-                        line_elements = acces_log_regex.match(line)
+                        line_elements = acces_log_regex.match(line.decode(encoding='UTF-8'))
                         print(line_elements)
                         # breakpoint()
             except IOError:
@@ -58,10 +59,10 @@ def dread(folder):
         elif fname.endswith('.log') or fname.endswith('.log.1'):
             try:
                 with open(folder+"/"+fname, 'r') as fopen:
-                    while line != '':
-                        line = fopen.readline()
-                        print()
-                        breakpoint()
+                    for line in fopen:
+                        line_elements = acces_log_regex.match(line)
+                        print(line_elements)
+                        # breakpoint()
             except IOError:
                 print(os.path.dirname(os.path.abspath(__file__)))
                 print("Could not read file: ")
