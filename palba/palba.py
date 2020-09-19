@@ -35,10 +35,10 @@ def dread(folder):
 
     """
     line = 'x'
-    # RegEx strimg tp matcj log line in http access log
-    log_regex = r"^(\d{1,3}\.\d+\.\d+\.\d+)\s+([\w-]+)\s+([\w-]+)\s+\[(\d{1,2} \
+    # RegEx string to match log line in http access log
+    acces_log_regex =re.compile(r"^(\d{1,3}\.\d+\.\d+\.\d+)\s+([\w-]+)\s+([\w-]+)\s+\[(\d{1,2} \
                     \/\w{3}\/\d{4})\:(\d{2}\:\d{2}\:\d{2})\s*([\+\-]*\d{0,4}) \
-                    \]\s(\"\"|\".*\")\s(\d{3})\s(\d*)\s(\".*\")\s(\".*\")$"
+                    \]\s(\"\"|\".*\")\s(\d{3})\s(\d*)\s(\".*\")\s(\".*\")$")
 #   breakpoint()
     for fname in os.listdir(folder):
         print(folder+'/'+fname)
@@ -46,7 +46,8 @@ def dread(folder):
             try:
                 with gzip.open(folder+"/"+fname, 'r') as fopen:
                     for line in fopen:
-                        split_line = line
+                        line_elements = acces_log_regex.match(line)
+                        print(line_elements)
                         # breakpoint()
             except IOError:
                 print(os.path.dirname(os.path.abspath(__file__)))
