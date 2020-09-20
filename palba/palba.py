@@ -35,10 +35,21 @@ def dread(folder):
 
     """
     line = 'x'
-    # RegEx string to match log line in http access log
-    acces_log_regex =re.compile(r"^(\d{1,3}\.\d+\.\d+\.\d+)\s+([\w-]+)\s+([\w-]+)\s+\[(\d{1,2} \
-                                    \/\w{3}\/\d{4})\:(\d{2}\:\d{2}\:\d{2})\s*([\+\-]*\d{0,4}) \
-                                    \]\s(\"\"|\".*\")\s(\d{3})\s(\d*)\s(\".*\")\s(\".*\")$")
+    # RegEx string to match log line in http access log - need to be optimised 
+    # used named capture groups (?P<>) 
+    acces_log_regex =re.compile(r"^(?P<ip_addr>\d{1,3}\.\d+\.\d+\.\d+)"
+                                r"\s+(?P<client_id>[\w-]+)\s+"
+                                r"(?P<user_id>[\w-]+)\s+"
+                                r"\[(?P<time>\d{1,2}/\w{3}\/\d{4})\:(\d{2}\:\d{2}\:\d{2})\s*"
+                                r"(?P<timezone>[\+\-]*\d{0,4})\]\s"
+                                r"(?P<request>\"\"|\".*\")\s"
+                                r"(?P<status_code>\d{3})\s"
+                                r"(?P<object_size>\d*)\s"
+                                r"(?P<referer>\".*\")\s"
+                                r"(?P<user_agent>\".*\")$")
+#    acces_log_regex =re.compile(r"^(\d{1,3}\.\d+\.\d+\.\d+)\s+([\w-]+)\s+([\w-]+)\s+\[(\d{1,2}\
+#                                    \/\w{3}\/\d{4})\:(\d{2}\:\d{2}\:\d{2})\s*([\+\-]*\d{0,4})\
+#                                    \]\s(\"\"|\".*\")\s(\d{3})\s(\d*)\s(\".*\")\s(\".*\")$")
 #   breakpoint()
 # should build separate method to read file
     for fname in os.listdir(folder):
@@ -47,7 +58,7 @@ def dread(folder):
             try:
                 with gzip.open(folder+"/"+fname, 'r') as fopen:
                     for line in fopen:
-                        line_elements = acces_log_regex.match(line.decode(encoding='UTF-8'))
+                        line_elements = acces_log_regex.findall(line.decode(encoding='UTF-8'))
                         print(line_elements)
                         # breakpoint()
             except IOError:
@@ -60,7 +71,7 @@ def dread(folder):
             try:
                 with open(folder+"/"+fname, 'r') as fopen:
                     for line in fopen:
-                        line_elements = acces_log_regex.match(line)
+                        line_elements = acces_log_regex.findall(line)
                         print(line_elements)
                         # breakpoint()
             except IOError:
@@ -93,6 +104,7 @@ parser.add_option("-o", "--ofile", dest="ofile", type="string", action="store",
                   help="output file to save results")
 
 # breakpoint()
+print(os.path)
 
 (options, args) = parser.parse_args()
 
