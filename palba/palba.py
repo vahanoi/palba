@@ -46,7 +46,7 @@ def dread(folder):
             try:
                 with gzip.open(folder+"/"+fname, 'r') as fopen:
                     for line in fopen:
-                        line_elements = acces_log_regex.match(line)
+                        line_elements = acces_log_regex.findall(line.conv)
                         print(line_elements)
                         # breakpoint()
             except IOError:
