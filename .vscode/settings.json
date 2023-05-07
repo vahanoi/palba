@@ -1,2 +1,6 @@
 {
+    "python.linting.enabled": true,
+    "python.linting.pylintUseMinimalCheckers": false,
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.flake8Enabled": true
 }
